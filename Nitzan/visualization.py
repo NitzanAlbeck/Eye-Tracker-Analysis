@@ -35,19 +35,18 @@ class Visual (self, df, reso, cond_dict, pho_dict):
         1. 2 d histogram, using the resolotion (devided by 10 for better visualize)
         2. heatmap over the map
         '''
-
         #creating 2d density data : 2d histogram
         raw_x = self.df['aveH'].to_numpy().ravel()
         raw_y = self.df['aveV'].to_numpy().ravel()
-        bins = [self.reso[0]/10,self.reso[1]/10] #change to tuple
+        bins = [self.reso[0]/10,self.reso[1]/10] 
         range_bins = [[0,self.reso[0]] , [0,self.reso[1]]]
         data_2d, x_bin, y_bin = np.histogram2d(raw_x, raw_y, bins=bins, range = range_bins)
         
         #creating the heatmap over the picture:
-        heat = sns.heatmap(data_2d.T,cbar = True, cmap = 'Reds', alpha = 0.5, zorder = 2, ax=ax)
+        heat = sns.heatmap(data_2d.T,cbar = True, cmap = 'Reds',
+         alpha = 0.5, zorder = 2, ax=ax)
         
         map_img = mpimg.imread(ph_png)
-        
         heat.imshow(map_img,
             aspect = heat.get_aspect(),
             extent = heat.get_xlim() + heat.get_ylim(),
@@ -63,7 +62,6 @@ class Visual (self, df, reso, cond_dict, pho_dict):
         con_num = len(self.cond_dict)
         
         f, axes = plt.subplots(con_num, 1, figsize=(16, 16),sharex = True, sharey=False)
-        
         for ax, cond_key in zip(axes, self.cond_dict):
             df_cond = df.loc[lambda self.df:self.df['cond_int'] == self.cond_dict[cond_key]]
             cond_pho = self.pho_dict[cond_key]
